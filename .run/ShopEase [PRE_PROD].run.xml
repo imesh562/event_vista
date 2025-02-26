@@ -1,0 +1,7 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="ShopEase [PRE_PROD]" type="FlutterRunConfigurationType" factoryName="Flutter">
+    <option name="buildFlavor" value="pre_production" />
+    <option name="filePath" value="$PROJECT_DIR$/lib/flavors/main_pre_production.dart" />
+    <method v="2" />
+  </configuration>
+</component>

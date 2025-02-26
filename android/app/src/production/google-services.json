@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "131794505075",
+    "project_id": "shopease-e7850",
+    "storage_bucket": "shopease-e7850.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:131794505075:android:0c8afb730bbcbf56fc4906",
+        "android_client_info": {
+          "package_name": "com.ijapps.shopease"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAiGtuRibxMm8RD8pno31PhIygNKdUr3KA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
