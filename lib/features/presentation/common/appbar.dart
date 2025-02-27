@@ -100,7 +100,7 @@ class EventVistaAppBar extends StatelessWidget implements PreferredSizeWidget {
                       horizontal: 19.w,
                     ),
                     decoration: BoxDecoration(
-                      color: AppColors.initColors().primaryBlue,
+                      color: AppColors.initColors().primaryOrange,
                       borderRadius: BorderRadius.circular(40.r),
                     ),
                     child: Center(

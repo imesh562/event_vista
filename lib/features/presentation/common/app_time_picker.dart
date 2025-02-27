@@ -85,7 +85,7 @@ class _AppTimePickerState extends State<AppTimePicker> {
                       widget.titleImage!,
                       height: 20.h,
                       color: widget.iconColor ??
-                          AppColors.initColors().primaryBlue,
+                          AppColors.initColors().primaryOrange,
                       opacity: widget.changeColorOnDisable!
                           ? const AlwaysStoppedAnimation(.4)
                           : null,

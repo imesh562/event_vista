@@ -1,13 +1,13 @@
 import 'dart:developer';
 
 import 'package:device_preview/device_preview.dart';
+import 'package:eventvista/app/shopease_app.dart';
+import 'package:eventvista/utils/enums.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:eventvista/app/shopease_app.dart';
-import 'package:eventvista/utils/enums.dart';
 
 import '../core/configurations/app_config.dart';
 import '../core/service/dependency_injection.dart' as di;
@@ -40,7 +40,7 @@ Future<void> main() async {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
-    systemNavigationBarColor: AppColors.initColors().buttonColor,
+    systemNavigationBarColor: AppColors.initColors().primaryOrange,
   ));
 
   runApp(

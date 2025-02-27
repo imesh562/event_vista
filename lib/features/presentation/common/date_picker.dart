@@ -47,7 +47,8 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.only(left: 6.w, bottom: 8.h, right: 6.w,top: 2.h),
+          padding:
+              EdgeInsets.only(left: 6.w, bottom: 8.h, right: 6.w, top: 2.h),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -61,7 +62,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                   ),
                 ),
               ),
-              widget.audienceWidget??const SizedBox.shrink(),
+              widget.audienceWidget ?? const SizedBox.shrink(),
             ],
           ),
         ),
@@ -86,7 +87,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                 value: _isYearVisible,
                 borderRadius: 25.0,
                 padding: 3.0,
-                activeColor: AppColors.initColors().primaryBlue,
+                activeColor: AppColors.initColors().primaryOrange,
                 inactiveColor: AppColors.initColors().switchGrey,
                 onToggle: (value) {
                   if (widget.selectedDate != null) {

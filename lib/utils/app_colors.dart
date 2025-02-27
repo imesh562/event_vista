@@ -18,7 +18,6 @@ class AppColors {
     required this.lightBlue,
     required this.colorGrey,
     required this.primaryPink,
-    required this.primaryBlue,
     required this.nonChangeBlack,
     required this.nonChangeWhite,
     required this.errorRed,
@@ -41,6 +40,13 @@ class AppColors {
     required this.newBlack,
     required this.newBlack2,
     required this.updateColor,
+    required this.loginSubTitleColor,
+    required this.darkGrey,
+
+    ///New Colors for this project
+    required this.primaryOrange,
+    required this.blackTextColor1,
+    required this.greyTextColor1,
   });
 
   Color textFieldFill;
@@ -57,7 +63,6 @@ class AppColors {
   Color lightBlue;
   Color colorGrey;
   Color primaryPink;
-  Color primaryBlue;
   Color nonChangeBlack;
   Color nonChangeWhite;
   Color errorRed;
@@ -79,6 +84,13 @@ class AppColors {
   Color newBlack;
   Color newBlack2;
   Color updateColor;
+  Color loginSubTitleColor;
+  Color darkGrey;
+
+  ///New Colors for this project
+  Color primaryOrange;
+  Color blackTextColor1;
+  Color greyTextColor1;
 
   static AppColors initColors() {
     if (AppConstants.selectedTheme == ThemeType.LIGHT) {
@@ -111,7 +123,6 @@ class AppColors {
       lightBlue: const Color(0xFFB8CDFE),
       colorGrey: const Color(0xFF777777),
       primaryPink: const Color(0xFF8777D8),
-      primaryBlue: const Color(0xFF6078F8),
       checkBoxBorder: const Color(0xFFD0D0D0),
       nonChangeBlack: const Color(0xFF363636),
       nonChangeWhite: const Color(0xFFFFFFFF),
@@ -129,6 +140,13 @@ class AppColors {
       switchGrey: const Color(0xFFCBCBCB),
       dark: const Color(0xFF000000),
       updateColor: const Color(0xFF992E00),
+      loginSubTitleColor: const Color(0xFF939292),
+      darkGrey: const Color(0xFFE4E4E4),
+
+      ///New Colors for this project
+      primaryOrange: const Color(0xFFDA5E42),
+      blackTextColor1: const Color(0xFF191C1E),
+      greyTextColor1: const Color(0xFF757779),
     );
   }
 
@@ -156,7 +174,6 @@ class AppColors {
       lightBlue: const Color(0xFFB8CDFE),
       colorGrey: const Color(0xFF777777),
       primaryPink: const Color(0xFF8777D8),
-      primaryBlue: const Color(0xFF6078F8),
       nonChangeBlack: const Color(0xFF363636),
       nonChangeWhite: const Color(0xFFFFFFFF),
       errorRed: const Color(0xFFE34040),
@@ -173,6 +190,13 @@ class AppColors {
       dark: const Color(0xFF000000),
       updateColor: const Color(0xFF992E00),
       networkBorderColor: const Color(0xFFC5C5C5),
+      loginSubTitleColor: const Color(0xFF939292),
+      darkGrey: const Color(0xFFE4E4E4),
+
+      ///New Colors for this project
+      primaryOrange: const Color(0xFFDA5E42),
+      blackTextColor1: const Color(0xFF191C1E),
+      greyTextColor1: const Color(0xFF757779),
     );
   }
 }

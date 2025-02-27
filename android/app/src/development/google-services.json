@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "131794505075",
-    "project_id": "shopease-e7850",
-    "storage_bucket": "shopease-e7850.firebasestorage.app"
+    "project_number": "643117660101",
+    "project_id": "eventvista-e104b",
+    "storage_bucket": "eventvista-e104b.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:131794505075:android:0c8afb730bbcbf56fc4906",
+        "mobilesdk_app_id": "1:643117660101:android:819d8ac3765d5ac9683dac",
         "android_client_info": {
-          "package_name": "com.ijapps.shopease"
+          "package_name": "com.ijapps.eventvista"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAiGtuRibxMm8RD8pno31PhIygNKdUr3KA"
+          "current_key": "AIzaSyCer0dPmg4nx6QN0GZcGE_IyhQHzp_Xu2w"
         }
       ],
       "services": {

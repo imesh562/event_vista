@@ -14,6 +14,11 @@ class AppImages {
   static const String icCalendar3 = 'images/png/ic_calendar_2.png';
   static const String icTime = 'images/png/ic_time.png';
 
+  static const String icEmail = 'images/png/ic_email.png';
+  static const String icLock = 'images/png/ic_lock.png';
+  static const String icEyeView = 'images/png/ic_eye_view.png';
+  static const String icEyeHide = 'images/png/ic_eye_hide.png';
+
   /// SVG
   static const String icCalendar = 'images/svg/ic_calendar.svg';
 }

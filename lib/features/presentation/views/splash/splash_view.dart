@@ -37,7 +37,7 @@ class _SplashViewState extends BaseViewState<SplashView>
     ///TODO: Remove this on API integration.
     Future.delayed(const Duration(milliseconds: 1250)).then((value) {
       Navigator.pushNamedAndRemoveUntil(
-          context, Routes.kDashboardView, (route) => false);
+          context, Routes.kLoginView, (route) => false);
     });
   }
 

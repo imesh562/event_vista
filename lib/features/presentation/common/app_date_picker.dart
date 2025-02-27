@@ -90,7 +90,7 @@ class _AppDatePickerState extends State<AppDatePicker> {
                       widget.titleImage!,
                       height: 20.h,
                       color: widget.iconColor ??
-                          AppColors.initColors().primaryBlue,
+                          AppColors.initColors().primaryOrange,
                     ),
                     SizedBox(width: 4.w),
                   ],
