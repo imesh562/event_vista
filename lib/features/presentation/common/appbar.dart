@@ -1,30 +1,22 @@
+import 'package:eventvista/utils/app_dimensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:eventvista/utils/app_dimensions.dart';
 
 import '../../../utils/app_colors.dart';
 
 class EventVistaAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final bool isGoBackVisible;
-  final bool isPreLogin;
   final List<Widget>? actions;
   final VoidCallback? onBackPressed;
   final bool? showDivider;
-  final bool? showCreateButton;
-  final bool? disableCreateButton;
-  final VoidCallback? onCreatePressed;
 
   EventVistaAppBar({
     this.title = '',
     this.actions,
     this.isGoBackVisible = true,
-    this.isPreLogin = false,
     this.showDivider = false,
     this.onBackPressed,
-    this.showCreateButton = false,
-    this.onCreatePressed,
-    this.disableCreateButton = false,
   });
 
   @override
@@ -37,8 +29,8 @@ class EventVistaAppBar extends StatelessWidget implements PreferredSizeWidget {
           ? PreferredSize(
               preferredSize: Size.fromHeight(1.h),
               child: Container(
-                color: AppColors.initColors().dividerColor,
-                height: 1.0,
+                color: AppColors.initColors().dividerColor2,
+                height: 1.h,
               ),
             )
           : null,
@@ -59,10 +51,8 @@ class EventVistaAppBar extends StatelessWidget implements PreferredSizeWidget {
                       child: Padding(
                         padding: EdgeInsets.only(left: 4.w),
                         child: Icon(
-                          Icons.arrow_back_ios,
-                          color: isPreLogin
-                              ? AppColors.initColors().nonChangeBlack
-                              : AppColors.initColors().newBlack,
+                          Icons.arrow_back,
+                          color: AppColors.initColors().newBlack,
                           size: 24.h,
                         ),
                       ),
@@ -78,8 +68,8 @@ class EventVistaAppBar extends StatelessWidget implements PreferredSizeWidget {
                       title,
                       style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        fontSize: AppDimensions.kFontSize16,
-                        color: AppColors.initColors().newBlack,
+                        fontSize: AppDimensions.kFontSize17,
+                        color: AppColors.initColors().blackTextColor1,
                       ),
                     ),
                   ),
@@ -87,36 +77,6 @@ class EventVistaAppBar extends StatelessWidget implements PreferredSizeWidget {
               ),
             ],
           ),
-          if (showCreateButton == true)
-            Positioned(
-              right: 0.w,
-              child: InkWell(
-                onTap: disableCreateButton != true ? onCreatePressed : null,
-                child: Opacity(
-                  opacity: disableCreateButton != true ? 1 : 0.5,
-                  child: Container(
-                    height: 30.12.h,
-                    padding: EdgeInsets.symmetric(
-                      horizontal: 19.w,
-                    ),
-                    decoration: BoxDecoration(
-                      color: AppColors.initColors().primaryOrange,
-                      borderRadius: BorderRadius.circular(40.r),
-                    ),
-                    child: Center(
-                      child: Text(
-                        'Create',
-                        style: TextStyle(
-                          fontSize: AppDimensions.kFontSize12,
-                          fontWeight: FontWeight.w400,
-                          color: AppColors.initColors().white,
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
         ],
       ),
       actions: actions,

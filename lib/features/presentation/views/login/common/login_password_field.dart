@@ -6,29 +6,26 @@ import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/app_dimensions.dart';
 import '../../../../../utils/app_images.dart';
 
-class LoginPasswordField extends StatefulWidget {
+class PasswordField extends StatefulWidget {
   final TextEditingController? controller;
-  final Widget? icon;
   final String? hint;
+  final Widget? icon;
   final Function(String)? onTextChanged;
   final TextInputType? inputType;
   final bool? isEnable;
-  final bool? isRequired;
-  final bool isPreLogin;
   final int? maxLength;
   final String? guideTitle;
-  final bool? shouldRedirectToNextField;
   final int? maxLines;
   final FocusNode? focusNode;
   final Function(String)? onSubmit;
   final TextInputFormatter? textInputFormatter;
   final String? Function(String?)? validator;
 
-  LoginPasswordField({
+  PasswordField({
     this.controller,
-    this.icon,
     this.hint,
     this.guideTitle,
+    this.icon,
     this.maxLength = 128,
     this.maxLines = 1,
     this.onTextChanged,
@@ -36,18 +33,15 @@ class LoginPasswordField extends StatefulWidget {
     this.focusNode,
     this.onSubmit,
     this.isEnable = true,
-    this.shouldRedirectToNextField = true,
-    this.isRequired = false,
-    this.isPreLogin = false,
     this.textInputFormatter,
     this.validator,
   });
 
   @override
-  State<LoginPasswordField> createState() => _LoginPasswordFieldState();
+  State<PasswordField> createState() => _PasswordFieldState();
 }
 
-class _LoginPasswordFieldState extends State<LoginPasswordField> {
+class _PasswordFieldState extends State<PasswordField> {
   bool obscureText = true;
 
   @override
@@ -56,39 +50,14 @@ class _LoginPasswordFieldState extends State<LoginPasswordField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.only(left: 6.w, bottom: 6.h, right: 6.w),
-          child: Row(
-            children: [
-              Image.asset(
-                AppImages.icLock,
-                height: 20.h,
-              ),
-              SizedBox(width: 4.w),
-              RichText(
-                text: TextSpan(
-                  text: (widget.guideTitle != null ? widget.guideTitle! : ''),
-                  style: TextStyle(
-                    fontSize: AppDimensions.kFontSize14,
-                    fontWeight: FontWeight.w500,
-                    color: widget.isPreLogin
-                        ? AppColors.initColors().textFieldTitleColor
-                        : AppColors.initColors().matteBlack,
-                  ),
-                  children: [
-                    TextSpan(
-                      text: widget.isRequired! ? ' *' : '',
-                      style: TextStyle(
-                        fontSize: AppDimensions.kFontSize14,
-                        fontWeight: FontWeight.w500,
-                        color: widget.isPreLogin
-                            ? AppColors.initColors().textFieldTitleColor
-                            : AppColors.initColors().matteBlack,
-                      ),
-                    )
-                  ],
-                ),
-              ),
-            ],
+          padding: EdgeInsets.only(left: 16.w, bottom: 8.h, right: 16.w),
+          child: Text(
+            widget.guideTitle ?? '',
+            style: TextStyle(
+              fontSize: AppDimensions.kFontSize13,
+              fontWeight: FontWeight.w500,
+              color: AppColors.initColors().textFieldColor,
+            ),
           ),
         ),
         TextFormField(
@@ -103,9 +72,6 @@ class _LoginPasswordFieldState extends State<LoginPasswordField> {
           focusNode: widget.focusNode,
           controller: widget.controller,
           obscureText: obscureText,
-          textInputAction: widget.shouldRedirectToNextField!
-              ? TextInputAction.next
-              : TextInputAction.done,
           enabled: widget.isEnable,
           maxLines: widget.maxLines,
           validator: widget.validator,
@@ -116,88 +82,24 @@ class _LoginPasswordFieldState extends State<LoginPasswordField> {
           ],
           style: TextStyle(
             fontSize: AppDimensions.kFontSize14,
-            fontWeight: FontWeight.w600,
-            color: widget.isPreLogin
-                ? AppColors.initColors().loginTitleColor
-                : AppColors.initColors().darkGrey,
+            fontWeight: FontWeight.w400,
+            color: AppColors.initColors().blackTextColor1,
           ),
           keyboardType: widget.inputType ?? TextInputType.text,
           decoration: InputDecoration(
             contentPadding:
-                EdgeInsets.only(left: 11.w, top: 11.5.h, bottom: 11.5.h),
+                EdgeInsets.only(left: 16.w, top: 14.h, bottom: 14.h),
             isDense: true,
             counterText: "",
-            disabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(6.r),
-              ),
-              borderSide: BorderSide(
-                color: widget.isPreLogin
-                    ? AppColors.initColors().checkBoxBorder
-                    : AppColors.initColors().darkStrokeGrey,
-                width: 0.75.w,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(6.r),
-              ),
-              borderSide: BorderSide(
-                color: widget.isPreLogin
-                    ? AppColors.initColors().checkBoxBorder
-                    : AppColors.initColors().darkStrokeGrey,
-                width: 0.75.w,
-              ),
-            ),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(6.r),
-              ),
-              borderSide: BorderSide(
-                color: widget.isPreLogin
-                    ? AppColors.initColors().checkBoxBorder
-                    : AppColors.initColors().darkStrokeGrey,
-                width: 0.75.w,
-              ),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(6.r),
-              ),
-              borderSide: BorderSide(
-                color: widget.isPreLogin
-                    ? AppColors.initColors().checkBoxBorder
-                    : AppColors.initColors().darkStrokeGrey,
-                width: 0.75.w,
-              ),
-            ),
-            focusedErrorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(6.r),
-              ),
-              borderSide: BorderSide(
-                color: AppColors.initColors().errorRed,
-                width: 0.75.w,
-              ),
-            ),
-            errorBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(6.r),
-              ),
-              borderSide: BorderSide(
-                color: AppColors.initColors().errorRed,
-                width: 0.75.w,
-              ),
-            ),
             errorMaxLines: 2,
             errorStyle: TextStyle(
               overflow: TextOverflow.ellipsis,
-              fontSize: AppDimensions.kFontSize10,
+              fontSize: AppDimensions.kFontSize12,
               fontWeight: FontWeight.w400,
-              color: AppColors.initColors().errorRed,
+              color: AppColors.initColors().colorError,
             ),
             prefixIcon: widget.icon,
-            prefixIconConstraints: BoxConstraints(minWidth: 55.w),
+            prefixIconConstraints: BoxConstraints(minWidth: 20.w),
             suffixIconConstraints: BoxConstraints(minHeight: 20.h),
             suffixIcon: Padding(
               padding: EdgeInsets.only(right: 11.w),
@@ -210,23 +112,39 @@ class _LoginPasswordFieldState extends State<LoginPasswordField> {
                 child: Image.asset(
                   obscureText ? AppImages.icEyeView : AppImages.icEyeHide,
                   height: obscureText ? 24.h : 20.h,
-                  color: widget.isPreLogin
-                      ? AppColors.initColors().loginSubTitleColor
-                      : AppColors.initColors().lightGrey,
+                  color: AppColors.initColors().blackTextColor1,
                 ),
               ),
             ),
             filled: true,
             hintText: widget.hint,
             hintStyle: TextStyle(
-                color: widget.isPreLogin
-                    ? AppColors.initColors().loginSubTitleColor
-                    : AppColors.initColors().lightGrey,
-                fontSize: AppDimensions.kFontSize12,
+                color: AppColors.initColors().hintColor,
+                fontSize: AppDimensions.kFontSize14,
                 fontWeight: FontWeight.w400),
-            fillColor: widget.isPreLogin
-                ? AppColors.initColors().nonChangeWhite
-                : AppColors.initColors().textFieldFill,
+            fillColor: AppColors.initColors().primaryOrange.withOpacity(0.08),
+            errorBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: AppColors.initColors().colorError,
+                width: 1.h,
+              ),
+            ),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: AppColors.initColors()
+                    .textFieldBottomColor
+                    .withOpacity(0.4),
+                width: 1.h,
+              ),
+            ),
+            focusedBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: AppColors.initColors()
+                    .textFieldBottomColor
+                    .withOpacity(0.4),
+                width: 1.h,
+              ),
+            ),
           ),
         ),
       ],

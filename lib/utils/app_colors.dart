@@ -47,6 +47,11 @@ class AppColors {
     required this.primaryOrange,
     required this.blackTextColor1,
     required this.greyTextColor1,
+    required this.textFieldColor,
+    required this.textFieldBottomColor,
+    required this.profilePicBgColor,
+    required this.dividerColor2,
+    required this.logoutColor,
   });
 
   Color textFieldFill;
@@ -91,6 +96,11 @@ class AppColors {
   Color primaryOrange;
   Color blackTextColor1;
   Color greyTextColor1;
+  Color textFieldColor;
+  Color textFieldBottomColor;
+  Color profilePicBgColor;
+  Color dividerColor2;
+  Color logoutColor;
 
   static AppColors initColors() {
     if (AppConstants.selectedTheme == ThemeType.LIGHT) {
@@ -147,6 +157,11 @@ class AppColors {
       primaryOrange: const Color(0xFFDA5E42),
       blackTextColor1: const Color(0xFF191C1E),
       greyTextColor1: const Color(0xFF757779),
+      textFieldColor: const Color(0xFF444749),
+      textFieldBottomColor: const Color(0xFFC5C6C8),
+      profilePicBgColor: const Color(0xFFF1E6E3),
+      dividerColor2: const Color(0xFFE1E2E4),
+      logoutColor: const Color(0xFFDB2424),
     );
   }
 
@@ -197,6 +212,11 @@ class AppColors {
       primaryOrange: const Color(0xFFDA5E42),
       blackTextColor1: const Color(0xFF191C1E),
       greyTextColor1: const Color(0xFF757779),
+      textFieldColor: const Color(0xFF444749),
+      textFieldBottomColor: const Color(0xFFC5C6C8),
+      profilePicBgColor: const Color(0xFFF1E6E3),
+      dividerColor2: const Color(0xFFE1E2E4),
+      logoutColor: const Color(0xFFDB2424),
     );
   }
 }

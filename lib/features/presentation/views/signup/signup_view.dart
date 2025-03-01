@@ -3,7 +3,6 @@ import 'package:eventvista/features/presentation/bloc/auth/auth_bloc.dart';
 import 'package:eventvista/features/presentation/common/app_button.dart';
 import 'package:eventvista/utils/app_dimensions.dart';
 import 'package:eventvista/utils/app_images.dart';
-import 'package:eventvista/utils/navigation_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,16 +14,16 @@ import '../../bloc/base_event.dart';
 import '../../bloc/base_state.dart';
 import '../../common/app_text_field.dart';
 import '../base_view.dart';
-import 'common/login_password_field.dart';
+import '../login/common/login_password_field.dart';
 
-class LoginView extends BaseView {
-  LoginView({super.key});
+class SignUpView extends BaseView {
+  SignUpView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<SignUpView> createState() => _SignUpViewState();
 }
 
-class _LoginViewState extends BaseViewState<LoginView> {
+class _SignUpViewState extends BaseViewState<SignUpView> {
   var bloc = injection<AuthBloc>();
   final formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
@@ -118,34 +117,34 @@ class _LoginViewState extends BaseViewState<LoginView> {
                               return null;
                             },
                           ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 22.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        InkWell(
-                          onTap: () {},
-                          child: Row(
-                            children: [
-                              Text(
-                                'Restore password',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: AppDimensions.kFontSize14,
-                                  color: AppColors.initColors().primaryOrange,
-                                ),
-                              ),
-                              SizedBox(width: 8.w),
-                              Image.asset(
-                                AppImages.icDiagonalArrow,
+                          SizedBox(height: 16.h),
+                          PasswordField(
+                            guideTitle: 'Password',
+                            hint: 'Enter your password',
+                            controller: _passwordController,
+                            maxLines: 1,
+                            icon: Padding(
+                              padding: EdgeInsets.only(left: 16.w, right: 12.w),
+                              child: Image.asset(
+                                AppImages.icLock,
                                 height: 20.h,
                               ),
-                            ],
+                            ),
+                            textInputFormatter:
+                                FilteringTextInputFormatter.deny(RegExp(r'\s')),
+                            maxLength: 60,
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Password is required!";
+                              }
+                              if (checkPassword(value)) {
+                                return "Password is invalid!";
+                              }
+                              return null;
+                            },
                           ),
-                        )
-                      ],
+                        ],
+                      ),
                     ),
                     SizedBox(height: 20.h),
                   ],
@@ -153,12 +152,9 @@ class _LoginViewState extends BaseViewState<LoginView> {
               ),
             ),
             AppButton(
-              buttonText: 'Login',
+              buttonText: 'Sign Up',
               onTapButton: () {
-                if (formKey.currentState!.validate()) {
-                  Navigator.pushNamed(
-                      context, Routes.kProfilePictureUploadView);
-                }
+                if (formKey.currentState!.validate()) {}
               },
               prefixIcon: Image.asset(
                 AppImages.icNext,
@@ -167,9 +163,9 @@ class _LoginViewState extends BaseViewState<LoginView> {
             ),
             SizedBox(height: 16.h),
             AppButton(
-              buttonText: 'Sign Up',
+              buttonText: 'Login',
               onTapButton: () {
-                Navigator.pushNamed(context, Routes.kSignUpView);
+                Navigator.pop(context);
               },
               prefixIcon: Image.asset(
                 AppImages.icNext,

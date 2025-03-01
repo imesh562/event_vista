@@ -235,9 +235,6 @@ abstract class BaseViewState<Page extends BaseView> extends State<Page> {
                               Navigator.pop(context);
                             },
                         buttonText: negativeButtonText,
-                        width: 120.w,
-                        height: 50.h,
-                        isFromDialog: true,
                       ),
                     if (negativeButtonText != null) const SizedBox(width: 10.0),
                     AppButton(
@@ -246,9 +243,6 @@ abstract class BaseViewState<Page extends BaseView> extends State<Page> {
                             Navigator.pop(context);
                           },
                       buttonText: positiveButtonText ?? 'Ok',
-                      width: 120.w,
-                      height: 50.h,
-                      isFromDialog: true,
                     ),
                   ],
                 ),
@@ -316,7 +310,6 @@ abstract class BaseViewState<Page extends BaseView> extends State<Page> {
                           );
                         },
                         buttonText: "Update Now",
-                        isFromDialog: true,
                       ),
                     ),
                   ],

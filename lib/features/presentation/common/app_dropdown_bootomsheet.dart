@@ -455,7 +455,6 @@ class _AppDropdownBottomSheetState extends State<AppDropdownBottomSheet> {
                   Column(
                     children: [
                       AppButton(
-                        width: 295.w,
                         buttonType:
                             (selectedItems.isNotEmpty || !widget.isEnable) &&
                                     (widget.isMultiSelect || !widget.isEnable)

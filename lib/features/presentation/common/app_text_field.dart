@@ -1,10 +1,7 @@
-import 'package:currency_text_input_formatter/currency_text_input_formatter.dart';
+import 'package:eventvista/utils/app_dimensions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:eventvista/utils/app_dimensions.dart';
-import 'package:eventvista/utils/app_images.dart';
-import 'package:super_tooltip/super_tooltip.dart';
 
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/enums.dart';
@@ -12,45 +9,29 @@ import '../../../../../utils/enums.dart';
 class AppTextField extends StatefulWidget {
   final TextEditingController? controller;
   final Widget? icon;
-  final Widget? action;
   final String? hint;
-  final String? helpText;
   final Function(String)? onTextChanged;
   final Function()? onFocusLoss;
   final String? Function(String?)? validator;
   final TextInputType? inputType;
   final bool? isEnable;
-  final bool? changeColorOnDisable;
-  final bool? isRequired;
-  final bool? showError;
   final int? maxLength;
   final String? label;
   final bool? obscureText;
-  final bool? shouldRedirectToNextField;
   final String? initialValue;
   final int? maxLines;
-  final bool? isCurrency;
   final FocusNode? focusNode;
   final FilterType? filterType;
   final Function(String)? onSubmit;
   final TextInputFormatter? textInputFormatter;
   final GlobalKey<FormFieldState<String>>? fieldKey;
-  final String? titleImage;
-  final String? error;
-  final bool isPreLogin;
-  final bool isFormField;
   final Color? iconColor;
-  final Color? bgColor;
 
   AppTextField({
     this.controller,
     this.icon,
-    this.action,
     this.hint,
-    this.helpText,
     this.label,
-    this.isRequired = false,
-    this.showError,
     this.maxLength = 250,
     this.maxLines = 1,
     this.onTextChanged,
@@ -60,20 +41,12 @@ class AppTextField extends StatefulWidget {
     this.validator,
     this.onSubmit,
     this.initialValue,
-    this.error,
     this.filterType,
     this.isEnable = true,
-    this.changeColorOnDisable = false,
     this.obscureText = false,
-    this.isCurrency = false,
-    this.shouldRedirectToNextField = true,
     this.textInputFormatter,
     this.fieldKey,
-    this.titleImage,
-    this.isPreLogin = false,
-    this.isFormField = false,
     this.iconColor,
-    this.bgColor,
   });
 
   @override
@@ -122,131 +95,18 @@ class _AppTextFieldState extends State<AppTextField> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.only(left: 6.w, bottom: 6.h, right: 6.w),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              if (widget.titleImage != null)
-                Row(
-                  children: [
-                    Image.asset(
-                      widget.titleImage!,
-                      height: 20.h,
-                      opacity: widget.changeColorOnDisable!
-                          ? const AlwaysStoppedAnimation(.4)
-                          : null,
-                    ),
-                    SizedBox(width: 4.w),
-                  ],
-                ),
-              if (widget.titleImage == null && widget.isFormField)
-                Row(
-                  children: [
-                    Image.asset(
-                      AppImages.icField,
-                      height: 16.h,
-                      color: widget.iconColor,
-                      opacity: widget.changeColorOnDisable!
-                          ? const AlwaysStoppedAnimation(.4)
-                          : null,
-                    ),
-                    SizedBox(width: 4.w),
-                  ],
-                ),
-              Expanded(
-                child: RichText(
-                  text: TextSpan(
-                    text: (widget.label != null ? widget.label! : ''),
-                    style: TextStyle(
-                      fontSize: AppDimensions.kFontSize14,
-                      fontWeight: FontWeight.w400,
-                      color: widget.isPreLogin
-                          ? widget.changeColorOnDisable!
-                              ? AppColors.initColors()
-                                  .textFieldTitleColor
-                                  .withOpacity(0.4)
-                              : AppColors.initColors().textFieldTitleColor
-                          : widget.changeColorOnDisable!
-                              ? AppColors.initColors()
-                                  .matteBlack
-                                  .withOpacity(0.4)
-                              : AppColors.initColors().matteBlack,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: widget.isRequired! ? ' \u2217' : '',
-                        style: TextStyle(
-                          fontSize: AppDimensions.kFontSize14,
-                          fontWeight: FontWeight.w400,
-                          color: widget.isPreLogin
-                              ? widget.changeColorOnDisable!
-                                  ? AppColors.initColors()
-                                      .textFieldTitleColor
-                                      .withOpacity(0.4)
-                                  : AppColors.initColors().textFieldTitleColor
-                              : widget.changeColorOnDisable!
-                                  ? AppColors.initColors()
-                                      .matteBlack
-                                      .withOpacity(0.4)
-                                  : AppColors.initColors().matteBlack,
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
-              if (widget.helpText != null && widget.helpText! != '')
-                SuperTooltip(
-                  showBarrier: true,
-                  arrowLength: 5,
-                  arrowBaseWidth: 5,
-                  arrowTipDistance: 5,
-                  hasShadow: false,
-                  barrierColor: AppColors.initColors().colorTransparent,
-                  backgroundColor: AppColors.initColors().matteBlack,
-                  content: Text(
-                    widget.helpText!,
-                    softWrap: true,
-                    style: TextStyle(
-                      color: widget.isPreLogin
-                          ? widget.changeColorOnDisable!
-                              ? AppColors.initColors()
-                                  .textFieldTitleColor
-                                  .withOpacity(0.4)
-                              : AppColors.initColors().textFieldTitleColor
-                          : widget.changeColorOnDisable!
-                              ? AppColors.initColors().white.withOpacity(0.4)
-                              : AppColors.initColors().white,
-                      fontSize: AppDimensions.kFontSize12,
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  child: Icon(
-                    Icons.info,
-                    color: widget.isPreLogin
-                        ? widget.changeColorOnDisable!
-                            ? AppColors.initColors()
-                                .textFieldTitleColor
-                                .withOpacity(0.4)
-                            : AppColors.initColors().textFieldTitleColor
-                        : widget.changeColorOnDisable!
-                            ? AppColors.initColors().matteBlack.withOpacity(0.4)
-                            : AppColors.initColors().matteBlack,
-                    size: 14.w,
-                  ),
-                )
-            ],
+          padding: EdgeInsets.only(left: 16.w, bottom: 8.h, right: 16.w),
+          child: Text(
+            widget.label ?? '',
+            style: TextStyle(
+              fontSize: AppDimensions.kFontSize13,
+              fontWeight: FontWeight.w500,
+              color: AppColors.initColors().textFieldColor,
+            ),
           ),
         ),
         TextFormField(
           onChanged: (text) {
-            if (widget.isCurrency!) {
-              int commaCount = text.split(',').length - 1;
-              int dotCount = text.split('.').length - 1;
-              setState(() {
-                totalCount = commaCount + dotCount;
-              });
-            }
             if (widget.onTextChanged != null) {
               widget.onTextChanged!(text);
             }
@@ -259,20 +119,11 @@ class _AppTextFieldState extends State<AppTextField> {
           focusNode: _focusNode,
           controller: _controller,
           obscureText: widget.obscureText!,
-          textInputAction: widget.shouldRedirectToNextField!
-              ? TextInputAction.next
-              : TextInputAction.done,
           enabled: widget.isEnable,
           maxLines: widget.maxLines,
           textCapitalization: TextCapitalization.sentences,
-          maxLength: widget.isCurrency!
-              ? widget.maxLength != null
-                  ? widget.maxLength! + totalCount
-                  : null
-              : widget.maxLength,
+          maxLength: widget.maxLength,
           inputFormatters: [
-            if (widget.isCurrency!)
-              CurrencyTextInputFormatter.currency(symbol: ''),
             if (widget.textInputFormatter != null) widget.textInputFormatter!,
             if (widget.filterType == FilterType.TYPE1)
               FilteringTextInputFormatter.allow(
@@ -305,22 +156,15 @@ class _AppTextFieldState extends State<AppTextField> {
           ],
           style: TextStyle(
             fontSize: AppDimensions.kFontSize14,
-            fontWeight: widget.isPreLogin ? FontWeight.w500 : FontWeight.w600,
-            color: widget.isPreLogin
-                ? widget.changeColorOnDisable!
-                    ? AppColors.initColors().loginTitleColor.withOpacity(0.4)
-                    : AppColors.initColors().loginTitleColor
-                : widget.changeColorOnDisable!
-                    ? AppColors.initColors().matteBlack.withOpacity(0.4)
-                    : AppColors.initColors().matteBlack,
+            fontWeight: FontWeight.w400,
+            color: AppColors.initColors().blackTextColor1,
           ),
           keyboardType: widget.inputType ?? TextInputType.text,
           decoration: InputDecoration(
             contentPadding:
-                EdgeInsets.only(left: 11.w, top: 11.5.h, bottom: 11.5.h),
+                EdgeInsets.only(left: 16.w, top: 14.h, bottom: 14.h),
             isDense: true,
             counterText: "",
-            errorText: widget.error ?? null,
             errorMaxLines: 2,
             errorStyle: TextStyle(
               overflow: TextOverflow.ellipsis,
@@ -329,45 +173,50 @@ class _AppTextFieldState extends State<AppTextField> {
               color: AppColors.initColors().colorError,
             ),
             prefixIcon: widget.icon,
-            prefixIconConstraints: BoxConstraints(minWidth: 55.w),
-            suffixIconConstraints:
-                BoxConstraints(minWidth: 24.w, maxHeight: 24.h),
-            suffixIcon: widget.action,
-            filled: false,
+            prefixIconConstraints: BoxConstraints(minWidth: 20.w),
+            filled: true,
             hintText: widget.hint,
             hintStyle: TextStyle(
-                color: widget.isPreLogin
-                    ? AppColors.initColors().hintColor
-                    : AppColors.initColors().hintColor,
-                fontSize: AppDimensions.kFontSize16,
+                color: AppColors.initColors().hintColor,
+                fontSize: AppDimensions.kFontSize14,
                 fontWeight: FontWeight.w400),
-            fillColor: widget.isPreLogin
-                ? AppColors.initColors().nonChangeWhite
-                : widget.bgColor != null
-                    ? widget.bgColor!.withOpacity(0.15)
-                    : AppColors.initColors().textFieldFill,
+            fillColor: AppColors.initColors().primaryOrange.withOpacity(0.08),
             errorBorder: UnderlineInputBorder(
-              borderRadius: BorderRadius.all(
-                Radius.circular(6.r),
+              borderSide: BorderSide(
+                color: AppColors.initColors().colorError,
+                width: 1.h,
               ),
+            ),
+            enabledBorder: UnderlineInputBorder(
               borderSide: BorderSide(
                 color: AppColors.initColors()
-                    .colorError, // Red underline when error
-                width: 1.0.w, // Adjust width as needed
+                    .textFieldBottomColor
+                    .withOpacity(0.4),
+                width: 1.h,
+              ),
+            ),
+            border: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: AppColors.initColors()
+                    .textFieldBottomColor
+                    .withOpacity(0.4),
+                width: 1.h,
+              ),
+            ),
+            disabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(
+                color: AppColors.initColors()
+                    .textFieldBottomColor
+                    .withOpacity(0.4),
+                width: 1.h,
               ),
             ),
             focusedBorder: UnderlineInputBorder(
               borderSide: BorderSide(
                 color: AppColors.initColors()
-                    .lightBlue, // Red underline when error
-                width: 1.0.w, // Adjust width as needed
-              ),
-            ),
-            focusedErrorBorder: UnderlineInputBorder(
-              borderSide: BorderSide(
-                color: AppColors.initColors()
-                    .colorError, // Red underline when error
-                width: 1.0.w, // Adjust width as needed
+                    .textFieldBottomColor
+                    .withOpacity(0.4),
+                width: 1.h,
               ),
             ),
           ),
