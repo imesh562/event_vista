@@ -23,14 +23,14 @@ import '../../common/app_button.dart';
 import '../../common/app_text_field.dart';
 import '../base_view.dart';
 
-class EditView extends BaseView {
-  EditView({super.key});
+class EditProfileView extends BaseView {
+  EditProfileView({super.key});
 
   @override
-  State<EditView> createState() => _EditViewState();
+  State<EditProfileView> createState() => _EditProfileViewState();
 }
 
-class _EditViewState extends BaseViewState<EditView> {
+class _EditProfileViewState extends BaseViewState<EditProfileView> {
   var bloc = injection<AuthBloc>();
   final formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
@@ -215,7 +215,7 @@ class _EditViewState extends BaseViewState<EditView> {
               buttonText: 'Save',
               onTapButton: () {
                 if (formKey.currentState!.validate()) {
-                  Navigator.pushNamed(context, Routes.kEditView);
+                  Navigator.pushNamed(context, Routes.kEditProfileView);
                 }
               },
             ),

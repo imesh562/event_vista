@@ -18,6 +18,7 @@ class AppImages {
   static const String icCamera = 'images/png/ic_camera.png';
   static const String icGallery = 'images/png/ic_gallery.png';
   static const String icLogout = 'images/png/ic_logout.png';
+  static const String icMessage = 'images/png/ic_message.png';
 
   /// SVG
   static const String icCalendar = 'images/svg/ic_calendar.svg';

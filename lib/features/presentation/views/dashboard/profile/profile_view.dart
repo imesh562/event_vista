@@ -305,7 +305,7 @@ class _ProfileViewState extends BaseViewState<ProfileView> {
             AppButton(
               buttonText: 'Edit',
               onTapButton: () {
-                Navigator.pushNamed(context, Routes.kEditView);
+                Navigator.pushNamed(context, Routes.kEditProfileView);
               },
             ),
             SizedBox(height: 24.h),

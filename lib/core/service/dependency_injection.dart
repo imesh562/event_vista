@@ -1,9 +1,10 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:dio/dio.dart';
+import 'package:eventvista/core/network/mock_api_helper.dart';
+import 'package:eventvista/features/presentation/bloc/posts/posts_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:eventvista/core/network/mock_api_helper.dart';
 
 import '../../features/data/datasources/remote_data_source.dart';
 import '../../features/data/datasources/shared_preference.dart';
@@ -54,6 +55,13 @@ Future<void> setupLocator() async {
   ///Blocs
   injection.registerFactory(
     () => AuthBloc(
+      appSharedData: injection(),
+      repository: injection(),
+      deviceInfo: injection(),
+    ),
+  );
+  injection.registerFactory(
+    () => PostsBloc(
       appSharedData: injection(),
       repository: injection(),
       deviceInfo: injection(),

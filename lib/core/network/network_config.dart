@@ -5,16 +5,16 @@ const RECEIVE_TIMEOUT = 60 * 1000;
 
 class IPAddress {
   /// DEV
-  static const String DEV = 'dev-api-refresh.shopease.co/v1/';
+  static const String DEV = 'jsonplaceholder.typicode.com/';
 
   /// STAGING
-  static const String STG = 'qa-api-refresh.shopease.co/v1/';
+  static const String STG = 'jsonplaceholder.typicode.com/';
 
   /// PRE_PRODUCTION
-  static const String PRE_PROD = 'api-pre-prod-refresh.shopease.co/v1/';
+  static const String PRE_PROD = 'jsonplaceholder.typicode.com/';
 
   /// PRODUCTION
-  static const String PROD = 'qa-api-refresh.shopease.co/v1/';
+  static const String PROD = 'jsonplaceholder.typicode.com/';
 }
 
 class ServerProtocol {
