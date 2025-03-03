@@ -1,28 +1,24 @@
 import 'dart:async';
-import 'dart:convert';
-import 'dart:io';
 import 'dart:ui';
 
 import 'package:connectivity_plus/connectivity_plus.dart';
-import 'package:eventvista/features/presentation/bloc/auth/auth_bloc.dart';
-import 'package:eventvista/utils/app_constants.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:store_redirect/store_redirect.dart';
 
-import '../../../core/service/app_messaging.dart';
 import '../../../core/service/dependency_injection.dart';
 import '../../../core/service/local_push_manager.dart';
 import '../../../flavors/flavor_banner.dart';
 import '../../../utils/app_colors.dart';
+import '../../../utils/app_constants.dart';
 import '../../../utils/app_dimensions.dart';
 import '../../../utils/device_info.dart';
 import '../../../utils/enums.dart';
 import '../../../utils/navigation_routes.dart';
 import '../../data/datasources/shared_preference.dart';
+import '../bloc/auth/auth_bloc.dart';
 import '../bloc/base_bloc.dart';
 import '../bloc/base_event.dart';
 import '../bloc/base_state.dart';
@@ -68,48 +64,6 @@ abstract class BaseViewState<Page extends BaseView> extends State<Page> {
         hasInternetAtStartUp.dispose();
       }
     });
-
-    if (!AppConstants.isPushServiceInitialized) {
-      AppConstants.isPushServiceInitialized = true;
-      _configureFirebaseNotification();
-      localPushManager =
-          LocalPushManager(onFetchedNotification: (notification) {
-        if (notification.payload != null) {
-          try {
-            final payload = FCMData.fromJson(jsonDecode(notification.payload!));
-            _handleNotifications(payload);
-          } catch (e) {}
-        }
-      });
-    }
-  }
-
-  _configureFirebaseNotification() async {
-    await FirebaseMessaging.instance
-        .setForegroundNotificationPresentationOptions(
-      alert: true,
-      badge: true,
-      sound: true,
-    );
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-      if (Platform.isAndroid && message.notification != null) {
-        final pushData = FCMData.fromJson(message.data);
-        localPushManager!.showNotification(LocalNotification(
-            title: message.notification!.title!,
-            body: message.notification!.body!,
-            type: pushData.type,
-            messageId: message.messageId,
-            payload: jsonEncode(message.data)));
-      }
-    });
-  }
-
-  _handleNotifications(FCMData payload) {
-    if (appSharedData.hasAuthUser()) {
-      switch (payload.type) {
-        ///TODO: Add navigation's according to notification type in here.
-      }
-    }
   }
 
   @override
@@ -375,14 +329,14 @@ abstract class BaseViewState<Page extends BaseView> extends State<Page> {
                     filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
                     child: Container(
                       alignment: FractionalOffset.center,
-                      padding: EdgeInsets.all(10),
-                      decoration: BoxDecoration(
+                      padding: const EdgeInsets.all(10),
+                      decoration: const BoxDecoration(
                         shape: BoxShape.circle,
                       ),
                       child: Wrap(
                         children: [
                           Container(
-                            padding: EdgeInsets.all(10),
+                            padding: const EdgeInsets.all(10),
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: AppColors.initColors().white,
@@ -417,6 +371,7 @@ abstract class BaseViewState<Page extends BaseView> extends State<Page> {
   showSnackBar(String message, AlertType alertType) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
+        duration: const Duration(seconds: 2),
         content: Text(
           message,
           style: TextStyle(
