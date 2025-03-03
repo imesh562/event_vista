@@ -34,13 +34,19 @@ class Routes {
             child: SignUpView(), type: PageTransitionType.fade);
       case Routes.kProfilePictureUploadView:
         return PageTransition(
-            child: ProfilePictureUploadView(), type: PageTransitionType.fade);
+            child: ProfilePictureUploadView(
+              email: settings.arguments as String,
+            ),
+            type: PageTransitionType.fade);
       case Routes.kDashboardView:
         return PageTransition(
             child: DashboardView(), type: PageTransitionType.fade);
       case Routes.kCompleteProfileView:
         return PageTransition(
-            child: CompleteProfileView(), type: PageTransitionType.fade);
+            child: CompleteProfileView(
+              email: settings.arguments as String,
+            ),
+            type: PageTransitionType.fade);
       case Routes.kEditProfileView:
         return PageTransition(
             child: EditProfileView(), type: PageTransitionType.fade);

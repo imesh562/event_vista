@@ -41,7 +41,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                       Image.asset(
                         AppImages.icHome,
                         height: 30.h,
-                        color: widget.selectedTab == 1
+                        color: widget.selectedTab != 1
                             ? null
                             : AppColors.initColors().nonChangeWhite,
                       ),
@@ -69,7 +69,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
                       Image.asset(
                         AppImages.icProfile,
                         height: 30.h,
-                        color: widget.selectedTab == 2
+                        color: widget.selectedTab != 2
                             ? null
                             : AppColors.initColors().nonChangeWhite,
                       ),

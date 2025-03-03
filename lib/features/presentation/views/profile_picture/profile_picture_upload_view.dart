@@ -4,6 +4,7 @@ import 'package:eventvista/features/presentation/bloc/auth/auth_bloc.dart';
 import 'package:eventvista/utils/app_images.dart';
 import 'package:eventvista/utils/navigation_routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -20,7 +21,8 @@ import '../../common/app_button.dart';
 import '../base_view.dart';
 
 class ProfilePictureUploadView extends BaseView {
-  ProfilePictureUploadView({super.key});
+  final String email;
+  ProfilePictureUploadView({required this.email});
 
   @override
   State<ProfilePictureUploadView> createState() =>
@@ -34,80 +36,93 @@ class _ProfilePictureUploadViewState
 
   @override
   Widget buildView(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.initColors().white,
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
-        child: Column(
-          children: [
-            Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Welcome',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: AppDimensions.kFontSize32,
-                      color: AppColors.initColors().blackTextColor1,
-                    ),
-                  ),
-                  SizedBox(height: 12.h),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 8.w),
-                    child: Text(
-                      'You are logged in for the first time and can upload a profile photo',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w400,
-                        fontSize: AppDimensions.kFontSize14,
-                        color: AppColors.initColors().greyTextColor1,
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 32.h),
-                  InkWell(
-                    onTap: _showImagePicker,
-                    child: ClipOval(
-                      child: Container(
-                        width: 116.w,
-                        height: 116.w,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: AppColors.initColors().profilePicBgColor,
+    return BlocProvider<AuthBloc>(
+      create: (_) => bloc,
+      child: BlocListener<AuthBloc, BaseState<AuthState>>(
+        listener: (_, state) {
+          if (state is AuthProfileIncomplete) {
+            Navigator.pushNamed(context, Routes.kCompleteProfileView,
+                arguments: widget.email);
+          }
+        },
+        child: Scaffold(
+          backgroundColor: AppColors.initColors().white,
+          body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: Column(
+              children: [
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Welcome',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w600,
+                          fontSize: AppDimensions.kFontSize32,
+                          color: AppColors.initColors().blackTextColor1,
                         ),
-                        child: selectedPicture != null
-                            ? Image.file(
-                                File(selectedPicture!.path),
-                                fit: BoxFit.cover,
-                              )
-                            : Center(
-                                child: Image.asset(
-                                  AppImages.icCamera,
-                                  height: 24.h,
-                                  width: 24.h,
-                                ),
-                              ),
                       ),
-                    ),
+                      SizedBox(height: 12.h),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 8.w),
+                        child: Text(
+                          'You are logged in for the first time and can upload a profile photo',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontWeight: FontWeight.w400,
+                            fontSize: AppDimensions.kFontSize14,
+                            color: AppColors.initColors().greyTextColor1,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 32.h),
+                      InkWell(
+                        onTap: _showImagePicker,
+                        child: ClipOval(
+                          child: Container(
+                            width: 116.w,
+                            height: 116.w,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: AppColors.initColors().profilePicBgColor,
+                            ),
+                            child: selectedPicture != null
+                                ? Image.file(
+                                    File(selectedPicture!.path),
+                                    fit: BoxFit.cover,
+                                  )
+                                : Center(
+                                    child: Image.asset(
+                                      AppImages.icCamera,
+                                      height: 24.h,
+                                      width: 24.h,
+                                    ),
+                                  ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                AppButton(
+                  buttonText: 'Next',
+                  onTapButton: () {
+                    if (selectedPicture != null) {
+                      bloc.add(UploadProfilePictureEvent(
+                        imageFile: File(selectedPicture!.path),
+                      ));
+                    }
+                  },
+                  prefixIcon: Image.asset(
+                    AppImages.icNext,
+                    height: 20.h,
+                  ),
+                ),
+                SizedBox(height: 30.h),
+              ],
             ),
-            AppButton(
-              buttonText: 'Next',
-              onTapButton: () {
-                if (selectedPicture != null) {
-                  Navigator.pushNamed(context, Routes.kCompleteProfileView);
-                }
-              },
-              prefixIcon: Image.asset(
-                AppImages.icNext,
-                height: 20.h,
-              ),
-            ),
-            SizedBox(height: 30.h),
-          ],
+          ),
         ),
       ),
     );
@@ -260,14 +275,6 @@ class _ProfilePictureUploadViewState
     }, (error) {
       showSnackBar(error, AlertType.FAIL);
     });
-  }
-
-  Future<void> _uploadImage(CroppedFile image) async {
-    File imageFile = File(image.path);
-    final fileSize = await imageFile.length();
-    if (fileSize > 10485760) {
-      showSnackBar('Maximum upload size is 10MB.', AlertType.FAIL);
-    } else {}
   }
 
   @override

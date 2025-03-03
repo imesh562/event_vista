@@ -54,7 +54,7 @@ android {
 
     defaultConfig {
         applicationId "com.ijapps.eventvista"
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName

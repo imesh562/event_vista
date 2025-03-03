@@ -21,6 +21,7 @@ import '../../../utils/app_colors.dart';
 import '../../../utils/app_dimensions.dart';
 import '../../../utils/device_info.dart';
 import '../../../utils/enums.dart';
+import '../../../utils/navigation_routes.dart';
 import '../../data/datasources/shared_preference.dart';
 import '../bloc/base_bloc.dart';
 import '../bloc/base_event.dart';
@@ -126,7 +127,7 @@ abstract class BaseViewState<Page extends BaseView> extends State<Page> {
                 showSnackBar(state.errorResponseModel.responseError ?? '',
                     AlertType.FAIL);
               } else if (state is AuthorizedFailureState) {
-                if (state.isSplash) {
+                if (state.errorResponseModel.responseError == null) {
                   logOut();
                 } else {
                   showAppDialog(
@@ -159,6 +160,8 @@ abstract class BaseViewState<Page extends BaseView> extends State<Page> {
 
   void logOut() {
     clearData();
+    Navigator.pushNamedAndRemoveUntil(
+        context, Routes.kLoginView, (route) => false);
 
     ///TODO: Add login screen navigation here.
   }

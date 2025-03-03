@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -65,7 +64,6 @@ class APIHelper {
       final response = await dio.get(
         NetworkConfig.getNetworkUrl() + url,
       );
-      log(response.toString());
       return response;
     } on DioError catch (e) {
       if (e.response != null && e.response!.statusCode != null) {
@@ -123,7 +121,6 @@ class APIHelper {
         NetworkConfig.getNetworkUrl() + url,
         data: body,
       );
-      log(response.toString());
       return response;
     } on DioError catch (e) {
       if (e.response != null) {

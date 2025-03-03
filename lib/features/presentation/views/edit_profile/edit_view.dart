@@ -1,11 +1,12 @@
 import 'dart:io';
 
-import 'package:email_validator/email_validator.dart';
 import 'package:eventvista/features/presentation/bloc/auth/auth_bloc.dart';
 import 'package:eventvista/features/presentation/common/appbar.dart';
 import 'package:eventvista/utils/app_images.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -13,7 +14,6 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../../core/service/dependency_injection.dart';
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/enums.dart';
-import '../../../../../utils/navigation_routes.dart';
 import '../../../../core/service/app_permission.dart';
 import '../../../../utils/app_dimensions.dart';
 import '../../bloc/base_bloc.dart';
@@ -38,189 +38,217 @@ class _EditProfileViewState extends BaseViewState<EditProfileView> {
   final lastNameController = TextEditingController();
   final phoneNumberController = TextEditingController();
   final addressController = TextEditingController();
-  String? imageUrl;
   CroppedFile? selectedPicture;
+  User? user;
+  Map<String, dynamic>? userData;
+
+  @override
+  void initState() {
+    super.initState();
+    bloc.add(FetchUserProfileEvent());
+  }
 
   @override
   Widget buildView(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.initColors().white,
-      appBar: EventVistaAppBar(
-        title: 'Edit profile',
-        showDivider: true,
-      ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
-        child: Column(
-          children: [
-            Expanded(
-              child: SingleChildScrollView(
-                physics: const BouncingScrollPhysics(),
-                child: Column(
-                  children: [
-                    SizedBox(height: 24.h),
-                    InkWell(
-                      onTap: _showImagePicker,
-                      child: ClipOval(
-                        child: Container(
-                          width: 116.w,
-                          height: 116.w,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: AppColors.initColors().profilePicBgColor,
-                          ),
-                          child: Stack(
+    return BlocProvider<AuthBloc>(
+      create: (_) => bloc,
+      child: BlocListener<AuthBloc, BaseState<AuthState>>(
+        listener: (_, state) {
+          if (state is ProfileLoaded) {
+            setState(() {
+              user = state.user;
+              userData = state.userData;
+              populateControllers();
+            });
+          } else if (state is AuthAuthenticated) {
+            if (selectedPicture != null) {
+              bloc.add(UploadProfilePictureEvent(
+                imageFile: File(selectedPicture!.path),
+              ));
+            } else {
+              Navigator.pop(context, true);
+            }
+          } else if (state is AuthProfileIncomplete) {
+            Navigator.pop(context, true);
+          }
+        },
+        child: Scaffold(
+          backgroundColor: AppColors.initColors().white,
+          appBar: EventVistaAppBar(
+            title: 'Edit profile',
+            showDivider: true,
+          ),
+          body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: userData != null && user != null
+                ? Column(
+                    children: [
+                      Expanded(
+                        child: SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          child: Column(
                             children: [
-                              selectedPicture != null
-                                  ? Image.file(
-                                      File(selectedPicture!.path),
-                                      fit: BoxFit.cover,
-                                    )
-                                  : Image.network(
-                                      imageUrl ?? '',
-                                      fit: BoxFit.cover,
-                                      errorBuilder:
-                                          (context, error, stackTrace) =>
-                                              Center(
-                                        child: Image.asset(
-                                          AppImages.icCamera,
-                                          color: AppColors.initColors().white,
-                                          height: 24.h,
-                                          width: 24.h,
-                                        ),
-                                      ),
+                              SizedBox(height: 24.h),
+                              InkWell(
+                                onTap: _showImagePicker,
+                                child: ClipOval(
+                                  child: Container(
+                                    width: 116.w,
+                                    height: 116.w,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: AppColors.initColors()
+                                          .profilePicBgColor,
                                     ),
-                              Center(
-                                child: Image.asset(
-                                  AppImages.icCamera,
-                                  color: AppColors.initColors().white,
-                                  height: 24.h,
-                                  width: 24.h,
+                                    child: Stack(
+                                      children: [
+                                        Image.file(
+                                          selectedPicture != null
+                                              ? File(selectedPicture!.path)
+                                              : userData!['profilePic'],
+                                          fit: BoxFit.cover,
+                                        ),
+                                        Center(
+                                          child: Image.asset(
+                                            AppImages.icCamera,
+                                            color: AppColors.initColors().white,
+                                            height: 24.h,
+                                            width: 24.h,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
+                              SizedBox(height: 32.h),
+                              Form(
+                                key: formKey,
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    AppTextField(
+                                      label: 'First Name',
+                                      hint: 'Enter First Name',
+                                      filterType: FilterType.TYPE6,
+                                      controller: firstNameController,
+                                      maxLength: 60,
+                                      textInputFormatter:
+                                          FilteringTextInputFormatter.deny(
+                                              RegExp(r'\s')),
+                                      inputType: TextInputType.name,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'First Name required!';
+                                        } else if (value.length < 3) {
+                                          return 'First name is invalid!';
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    SizedBox(height: 24.h),
+                                    AppTextField(
+                                      label: 'Last Name',
+                                      hint: 'Enter Last Name',
+                                      controller: lastNameController,
+                                      filterType: FilterType.TYPE6,
+                                      maxLength: 60,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return 'Last Name required!';
+                                        } else {
+                                          if (value.length < 3) {
+                                            return 'Last name is invalid!';
+                                          } else if (RegExp(r"\s{2,}")
+                                              .hasMatch(value)) {
+                                            return 'Last name is invalid!';
+                                          } else if (value.split(' ').length >
+                                              2) {
+                                            return 'Only two words are allowed';
+                                          }
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    SizedBox(height: 24.h),
+                                    AppTextField(
+                                      label: 'Email',
+                                      hint: 'Enter your email',
+                                      controller: _emailController,
+                                      isEnable: false,
+                                    ),
+                                    SizedBox(height: 5.h),
+                                    Text(
+                                      'Cannot change the email',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w400,
+                                        fontSize: AppDimensions.kFontSize12,
+                                        color: AppColors.initColors().dark,
+                                      ),
+                                    ),
+                                    SizedBox(height: 24.h),
+                                    AppTextField(
+                                      label: 'Phone number',
+                                      hint: 'Enter Phone number',
+                                      controller: phoneNumberController,
+                                      filterType: FilterType.TYPE4,
+                                      maxLength: 10,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return "Phone number is required!";
+                                        } else {
+                                          if (value.replaceAll(' ', '').length <
+                                              6) {
+                                            return 'Phone number is invalid!';
+                                          }
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                    SizedBox(height: 24.h),
+                                    AppTextField(
+                                      label: 'Mailing address',
+                                      hint: 'Enter Mailing address',
+                                      controller: addressController,
+                                      maxLength: 255,
+                                      validator: (value) {
+                                        if (value == null || value.isEmpty) {
+                                          return "Mailing address is required!";
+                                        } else {
+                                          if (RegExp(r"\s{2,}")
+                                              .hasMatch(value)) {
+                                            return 'Invalid Mailing address';
+                                          }
+                                        }
+                                        return null;
+                                      },
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(height: 24.h),
                             ],
                           ),
                         ),
                       ),
-                    ),
-                    SizedBox(height: 32.h),
-                    Form(
-                      key: formKey,
-                      child: Column(
-                        children: [
-                          AppTextField(
-                            label: 'First Name',
-                            hint: 'Enter First Name',
-                            filterType: FilterType.TYPE6,
-                            controller: firstNameController,
-                            maxLength: 60,
-                            textInputFormatter:
-                                FilteringTextInputFormatter.deny(RegExp(r'\s')),
-                            inputType: TextInputType.name,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'First Name required!';
-                              } else if (value.length < 3) {
-                                return 'First name is invalid!';
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(height: 24.h),
-                          AppTextField(
-                            label: 'Last Name',
-                            hint: 'Enter Last Name',
-                            controller: lastNameController,
-                            filterType: FilterType.TYPE6,
-                            maxLength: 60,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Last Name required!';
-                              } else {
-                                if (value.length < 3) {
-                                  return 'Last name is invalid!';
-                                } else if (RegExp(r"\s{2,}").hasMatch(value)) {
-                                  return 'Last name is invalid!';
-                                } else if (value.split(' ').length > 2) {
-                                  return 'Only two words are allowed';
-                                }
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(height: 24.h),
-                          AppTextField(
-                            label: 'Email',
-                            hint: 'Enter your email',
-                            controller: _emailController,
-                            maxLines: 1,
-                            maxLength: 100,
-                            inputType: TextInputType.emailAddress,
-                            textInputFormatter:
-                                FilteringTextInputFormatter.deny(
-                                    RegExp(r'[^\w.@+-]')),
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Email is required!";
-                              } else if (!EmailValidator.validate(value)) {
-                                return "Email is invalid!";
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(height: 24.h),
-                          AppTextField(
-                            label: 'Phone number',
-                            hint: 'Enter Phone number',
-                            controller: phoneNumberController,
-                            filterType: FilterType.TYPE4,
-                            maxLength: 10,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Phone number is required!";
-                              } else {
-                                if (value.replaceAll(' ', '').length < 6) {
-                                  return 'Phone number is invalid!';
-                                }
-                              }
-                              return null;
-                            },
-                          ),
-                          SizedBox(height: 24.h),
-                          AppTextField(
-                            label: 'Mailing address',
-                            hint: 'Enter Mailing address',
-                            controller: addressController,
-                            maxLength: 255,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Mailing address is required!";
-                              } else {
-                                if (RegExp(r"\s{2,}").hasMatch(value)) {
-                                  return 'Invalid Mailing address';
-                                }
-                              }
-                              return null;
-                            },
-                          ),
-                        ],
+                      AppButton(
+                        buttonText: 'Save',
+                        onTapButton: () {
+                          if (formKey.currentState!.validate()) {
+                            bloc.add(UpdateUserProfileEvent(
+                              firstName: firstNameController.text,
+                              lastName: lastNameController.text,
+                              mailingAddress: addressController.text,
+                              phoneNumber: phoneNumberController.text,
+                            ));
+                          }
+                        },
                       ),
-                    ),
-                    SizedBox(height: 24.h),
-                  ],
-                ),
-              ),
-            ),
-            AppButton(
-              buttonText: 'Save',
-              onTapButton: () {
-                if (formKey.currentState!.validate()) {
-                  Navigator.pushNamed(context, Routes.kEditProfileView);
-                }
-              },
-            ),
-            SizedBox(height: 24.h),
-          ],
+                      SizedBox(height: 24.h),
+                    ],
+                  )
+                : const SizedBox.shrink(),
+          ),
         ),
       ),
     );
@@ -375,12 +403,28 @@ class _EditProfileViewState extends BaseViewState<EditProfileView> {
     });
   }
 
-  Future<void> _uploadImage(CroppedFile image) async {
-    File imageFile = File(image.path);
-    final fileSize = await imageFile.length();
-    if (fileSize > 10485760) {
-      showSnackBar('Maximum upload size is 10MB.', AlertType.FAIL);
-    } else {}
+  void populateControllers() {
+    if (userData != null) {
+      if (userData!.containsKey('email')) {
+        _emailController.text = userData!['email'] ?? '';
+      }
+
+      if (userData!.containsKey('firstName')) {
+        firstNameController.text = userData!['firstName'] ?? '';
+      }
+
+      if (userData!.containsKey('lastName')) {
+        lastNameController.text = userData!['lastName'] ?? '';
+      }
+
+      if (userData!.containsKey('phoneNumber')) {
+        phoneNumberController.text = userData!['phoneNumber'] ?? '';
+      }
+
+      if (userData!.containsKey('mailingAddress')) {
+        addressController.text = userData!['mailingAddress'] ?? '';
+      }
+    }
   }
 
   @override
