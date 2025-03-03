@@ -83,9 +83,9 @@ class _CompleteProfileViewState extends BaseViewState<CompleteProfileView> {
                               AppTextField(
                                 label: 'First Name',
                                 hint: 'Enter First Name',
-                                filterType: FilterType.TYPE6,
+                                filterType: FilterType.TYPE2,
                                 controller: firstNameController,
-                                maxLength: 60,
+                                maxLength: 10,
                                 textInputFormatter:
                                     FilteringTextInputFormatter.deny(
                                         RegExp(r'\s')),
@@ -104,8 +104,8 @@ class _CompleteProfileViewState extends BaseViewState<CompleteProfileView> {
                                 label: 'Last Name',
                                 hint: 'Enter Last Name',
                                 controller: lastNameController,
-                                filterType: FilterType.TYPE6,
-                                maxLength: 60,
+                                filterType: FilterType.TYPE2,
+                                maxLength: 10,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Last Name required!';
@@ -145,10 +145,15 @@ class _CompleteProfileViewState extends BaseViewState<CompleteProfileView> {
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return "Phone number is required!";
-                                  } else {
-                                    if (value.replaceAll(' ', '').length < 6) {
-                                      return 'Phone number is invalid!';
-                                    }
+                                  }
+                                  String cleanedValue =
+                                      value.replaceAll(' ', '');
+                                  if (cleanedValue.length != 10) {
+                                    return 'Phone number must be 10 digits!';
+                                  }
+                                  if (!RegExp(r'^07\d{8}$')
+                                      .hasMatch(cleanedValue)) {
+                                    return 'Invalid Sri Lankan phone number!';
                                   }
                                   return null;
                                 },
@@ -158,13 +163,13 @@ class _CompleteProfileViewState extends BaseViewState<CompleteProfileView> {
                                 label: 'Mailing address',
                                 hint: 'Enter Mailing address',
                                 controller: addressController,
-                                maxLength: 255,
+                                maxLength: 50,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return "Mailing address is required!";
                                   } else {
-                                    if (RegExp(r"\s{2,}").hasMatch(value)) {
-                                      return 'Invalid Mailing address';
+                                    if (value.length < 6) {
+                                      return 'Mailing address is invalid!';
                                     }
                                   }
                                   return null;
